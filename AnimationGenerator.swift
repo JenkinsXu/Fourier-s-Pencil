@@ -13,6 +13,7 @@ struct AnimationGenerator {
     
     private let xCoordinates: [Float]
     private let yCoordinates: [Float]
+    static let numberOfFrames = 1024
     
     struct NumericError: Error {}
     struct Epicycle {
@@ -23,7 +24,7 @@ struct AnimationGenerator {
     }
     
     init(path: PKStrokePath) {
-        let numberOfSamples = 1024
+        let numberOfSamples = AnimationGenerator.numberOfFrames
         let stepSize = Double(path.count) / Double(numberOfSamples)
         let locations = stride(from: 0.0, to: Double(path.count), by: stepSize).map {
             path.interpolatedLocation(at: CGFloat($0))
@@ -98,5 +99,17 @@ struct AnimationGenerator {
         }
         
         return result
+    }
+}
+
+extension Array where Element == AnimationGenerator.Epicycle {
+    func toKeyframes() -> [[CGPoint]]? {
+        guard !self.isEmpty else { return nil }
+        let count = self.first!.timedLocations.count
+        return (0..<count).map { time in
+            self.map { epicycle in
+                epicycle.location(atTime: time)
+            }
+        }
     }
 }

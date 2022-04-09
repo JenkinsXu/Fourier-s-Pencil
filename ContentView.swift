@@ -3,7 +3,9 @@ import PencilKit
 
 struct ContentView: View {
     @State private var canvasView = PKCanvasView()
+    // TODO: maybe not a state?
     @State private var epicycles = [AnimationGenerator.Epicycle]()
+    @State private var keyframes = [[CGPoint]]()
     @State private var showAnimation = false
     
     var body: some View {
@@ -15,7 +17,7 @@ struct ContentView: View {
                 .background(Color(uiColor: .tertiarySystemGroupedBackground))
                 .toolbar(content: toolbarItems)
                 .sheet(isPresented: $showAnimation) {
-                    AnimatedView(epicycles: $epicycles)
+                    AnimatedView(epicycles: $epicycles, keyframes: $keyframes)
                 }
         }
         .navigationViewStyle(.stack)
@@ -58,6 +60,7 @@ struct ContentView: View {
         Task.detached(priority: .userInitiated) {
             do {
                 epicycles = try animationGenerator.epicycles()
+                keyframes = epicycles.toKeyframes()!
                 showAnimation = true
             } catch {
                 Swift.debugPrint(error.localizedDescription)
