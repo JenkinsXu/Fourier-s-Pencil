@@ -23,6 +23,7 @@ struct DrawingView: UIViewRepresentable {
 }
 
 class CanvasViewDelegate: NSObject, PKCanvasViewDelegate {
+    // It might be a bug in PencilKit, but after resizing, this method won't be called anymore
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
         canvasView.isUserInteractionEnabled = canvasView.drawing.strokes.isEmpty
         UIView.animate(withDuration: 0.4, delay: .zero, options: .curveEaseIn) {

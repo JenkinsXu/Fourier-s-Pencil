@@ -8,6 +8,18 @@ struct ContentView: View {
     @State private var keyframes = [[CGPoint]]()
     @State private var showAnimation = false
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    var navigationTitleText: String {
+        switch horizontalSizeClass {
+        case .regular:
+            return "Create Your One Stroke Painting"
+        case .compact:
+            return "In One Stroke"
+        default:
+            return "Loading"
+        }
+    }
+    
     var body: some View {
         canvasView.drawingPolicy = .anyInput
         return NavigationView {
@@ -15,7 +27,7 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding()
                 .background(Color(uiColor: .tertiarySystemGroupedBackground))
-                .navigationTitle("Create Your One Stroke Painting")
+                .navigationTitle(navigationTitleText)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing, content: toolbarItems)
                 }
