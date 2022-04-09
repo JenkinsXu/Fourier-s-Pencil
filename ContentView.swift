@@ -9,7 +9,8 @@ struct ContentView: View {
     @State private var showAnimation = false
     
     var body: some View {
-        NavigationView {
+        canvasView.drawingPolicy = .anyInput
+        return NavigationView {
             DrawingView(canvasView: $canvasView)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding()
