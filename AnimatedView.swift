@@ -15,7 +15,7 @@ struct AnimatedView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
     @State var currentFrame = 0
     
-    let animationTimer = Timer.publish(every: 0.05, on: .current, in: .default).autoconnect()
+    let animationTimer = Timer.publish(every: 0.027, on: .current, in: .default).autoconnect()
     @State private var shouldListenToTimer = true
     
     var body: some View {
@@ -74,7 +74,7 @@ struct AnimatedView: View {
                             cgContext.move(to: pointsPair.first!)
                             cgContext.addLine(to: pointsPair.last!)
                             
-                            cgContext.setLineWidth(CGFloat(currentPairIndex) / CGFloat(currentFrame) * 2)
+                            cgContext.setLineWidth(CGFloat(currentPairIndex) / CGFloat(currentFrame) * 2.5)
                             cgContext.drawPath(using: .stroke)
                             currentPairIndex += 1
                         }

@@ -13,7 +13,7 @@ struct AnimationGenerator {
     
     private let xCoordinates: [Float]
     private let yCoordinates: [Float]
-    static let numberOfFrames = 256
+    static let numberOfFrames = 512
     
     struct NumericError: Error {}
     struct Epicycle {
