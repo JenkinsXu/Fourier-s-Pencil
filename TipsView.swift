@@ -13,36 +13,41 @@ struct TipsView: View {
     var body: some View {
         TabView {
             Text("Welcome to Fourier's Pencil!").font(.title).bold()
-            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+            TipsVStack(withVideoNamed: "draw-tips~dark@2x") {
                 Text("Draw").font(.title).bold()
                 Text("Express your creativity in one stroke.")
             }
-            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+            TipsVStack(withVideoNamed: "draw-tips~dark@2x") {
                 Text("Redraw").font(.title).bold()
                 Text("Tap and redraw if you want.")
             }
-            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+            TipsVStack(withVideoNamed: "draw-tips~dark@2x", automaticallyAddSpacer: false) {
                 Text("Magic").font(.title).bold()
                 Text("Tap \"Finish\" and feel the beauty of math.")
-                Button("Start Drawing") {
-                    dismiss()
-                }.buttonStyle(.borderedProminent)
+                Spacer()
+                Button("Start Drawing") { dismiss() }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 48)
             }
         }
         .tabViewStyle(.page)
     }
 }
 
-struct TipsTab<Content: View>: View {
+struct TipsVStack<Content: View>: View {
     private var playerLooper: AVPlayerLooper
     private let player: AVPlayer
+    private let automaticallyAddSpcaer: Bool
     let content: Content
     
-    init(withVideoNamed videoResourceName: String, @ViewBuilder content: () -> Content) {
+    init(withVideoNamed videoResourceName: String,
+         automaticallyAddSpacer: Bool = true,
+         @ViewBuilder content: () -> Content) {
         let url = Bundle.main.url(forResource: videoResourceName, withExtension: "mov")!
         let playerItem = AVPlayerItem(url: url)
         self.player = AVQueuePlayer()
         self.playerLooper = AVPlayerLooper(player: player as! AVQueuePlayer, templateItem: playerItem)
+        self.automaticallyAddSpcaer = automaticallyAddSpacer
         self.content = content()
     }
     
@@ -52,7 +57,9 @@ struct TipsTab<Content: View>: View {
                 .aspectRatio(16 / 9, contentMode: .fit)
                 .onAppear(perform: player.play)
             content
-            Spacer()
+            if automaticallyAddSpcaer {
+                Spacer()
+            }
         }
     }
 }
