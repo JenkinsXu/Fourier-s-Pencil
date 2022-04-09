@@ -12,6 +12,12 @@ extension CGPoint {
     static func inComplexPlane(at complexNumber: DSPComplex) -> CGPoint {
         return CGPoint(x: CGFloat(complexNumber.real), y: CGFloat(complexNumber.imag))
     }
+    
+    func distanceFrom(_ anotherPoint: CGPoint) -> CGFloat {
+        let xDistance = (anotherPoint.x - self.x)
+        let yDistance = (anotherPoint.y - self.y)
+        return sqrt(xDistance * xDistance + yDistance * yDistance)
+    }
 }
 
 extension CGPoint: AccelerateMutableBuffer {

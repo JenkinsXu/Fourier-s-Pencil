@@ -12,12 +12,30 @@ struct AnimatedView: View {
     @Binding var epicycles: [AnimationGenerator.Epicycle]
     @Binding var keyframes: [[CGPoint]]
     @State var currentFrame = 0
-    let animationTimer = Timer.publish(every: 0.002, on: .current, in: .default).autoconnect()
+    let animationTimer = Timer.publish(every: 0.02, on: .current, in: .default).autoconnect()
     
     var body: some View {
         Canvas { context, size in
             context.withCGContext { cgContext in
                 let centerLocations = keyframes[currentFrame]
+                
+                for pointsPair in centerLocations.windows(ofCount: 2) {
+                    let centerPoint = pointsPair.first!
+                    let nextPoint = pointsPair.last!
+                    let radius = centerPoint.distanceFrom(nextPoint)
+                    
+                    let origin = CGPoint(x: centerPoint.x - radius, y: centerPoint.y - radius)
+                    let edgeLength = 2 * radius
+                    let rectangle = CGRect(origin: origin,
+                                           size: CGSize(width: edgeLength, height: edgeLength))
+                    let path = CGPath(ellipseIn: rectangle, transform: nil)
+                    
+                    cgContext.addPath(path)
+                    cgContext.setStrokeColor(UIColor.systemBlue.cgColor)
+                    cgContext.setLineWidth(1)
+                    cgContext.drawPath(using: .stroke)
+                }
+                
                 cgContext.setStrokeColor(UIColor.orange.cgColor)
                 cgContext.setLineWidth(2)
                 
