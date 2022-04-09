@@ -13,9 +13,9 @@ struct ContentView: View {
             DrawingView(canvasView: $canvasView)
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding()
+                .background(Color(uiColor: .tertiarySystemGroupedBackground))
                 .navigationTitle("Create Your One Stroke Painting")
                 .toolbar(content: toolbarItems)
-                .background(Color(uiColor: .tertiarySystemGroupedBackground))
                 .fullScreenCover(isPresented: $showAnimation, onDismiss: clearCanvas) {
                     AnimatedView(epicycles: $epicycles, keyframes: $keyframes)
                 }
