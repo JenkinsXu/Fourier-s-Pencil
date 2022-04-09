@@ -6,62 +6,53 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct TipsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
     var body: some View {
         TabView {
-            WelcomeView()
-            DrawTipsView()
-            RedrawTipsView()
-            FinishTipsView(dismiss: dismiss)
+            Text("Welcome to Fourier's Pencil!").font(.title).bold()
+            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+                Text("Draw").font(.title).bold()
+                Text("Express your creativity in one stroke.")
+            }
+            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+                Text("Redraw").font(.title).bold()
+                Text("Tap and redraw if you want.")
+            }
+            TipsTab(withVideoNamed: "draw-tips~dark@2x") {
+                Text("Magic").font(.title).bold()
+                Text("Tap \"Finish\" and feel the beauty of math.")
+                Button("Start Drawing") {
+                    dismiss()
+                }.buttonStyle(.borderedProminent)
+            }
         }
         .tabViewStyle(.page)
     }
 }
 
-struct WelcomeView: View {
-    var body: some View {
-        Text("Welcome to Fourier's Pencil")
-            .font(.title)
-            .bold()
+struct TipsTab<Content: View>: View {
+    private var playerLooper: AVPlayerLooper
+    private let player: AVPlayer
+    let content: Content
+    
+    init(withVideoNamed videoResourceName: String, @ViewBuilder content: () -> Content) {
+        let url = Bundle.main.url(forResource: videoResourceName, withExtension: "mov")!
+        let playerItem = AVPlayerItem(url: url)
+        self.player = AVQueuePlayer()
+        self.playerLooper = AVPlayerLooper(player: player as! AVQueuePlayer, templateItem: playerItem)
+        self.content = content()
     }
-}
-
-struct DrawTipsView: View {
+    
     var body: some View {
         VStack {
-            Text("Draw")
-                .font(.title)
-                .bold()
-            Text("Express your creativity in one stroke.")
-        }
-    }
-}
-
-struct RedrawTipsView: View {
-    var body: some View {
-        VStack {
-            Text("Redraw")
-                .font(.title)
-                .bold()
-            Text("Tap and redraw if you want.")
-        }
-    }
-}
-
-struct FinishTipsView: View {
-    let dismiss: DismissAction
-    var body: some View {
-        VStack {
-            Text("Magic")
-                .font(.title)
-                .bold()
-            Text("Tap \"Finish\" and feel the beauty of math.")
-            Button("Start Drawing") {
-                dismiss()
-            }
-            .buttonStyle(.borderedProminent)
+            VideoPlayer(player: player)
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .onAppear(perform: player.play)
+            content
+            Spacer()
         }
     }
 }
