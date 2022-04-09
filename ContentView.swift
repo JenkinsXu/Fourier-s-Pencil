@@ -14,9 +14,11 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding()
                 .navigationTitle("Create Your One Stroke Painting")
-                .background(Color(uiColor: .tertiarySystemGroupedBackground))
                 .toolbar(content: toolbarItems)
-                .sheet(isPresented: $showAnimation) {
+                .background(Color(uiColor: .tertiarySystemGroupedBackground))
+                .fullScreenCover(isPresented: $showAnimation) {
+                    canvasView.drawing = PKDrawing()
+                } content: {
                     AnimatedView(epicycles: $epicycles, keyframes: $keyframes)
                 }
         }
