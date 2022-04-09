@@ -11,11 +11,20 @@ struct TipsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
     var body: some View {
         TabView {
+            WelcomeView()
             DrawTipsView()
             RedrawTipsView()
             FinishTipsView(dismiss: dismiss)
         }
         .tabViewStyle(.page)
+    }
+}
+
+struct WelcomeView: View {
+    var body: some View {
+        Text("Welcome to Fourier's Pencil")
+            .font(.title)
+            .bold()
     }
 }
 
