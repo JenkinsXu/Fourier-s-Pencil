@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var epicycles = [AnimationGenerator.Epicycle]()
     @State private var keyframes = [[CGPoint]]()
     @State private var showAnimation = false
+    @State private var showTips = false
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     var navigationTitleText: String {
@@ -34,13 +35,16 @@ struct ContentView: View {
                 .fullScreenCover(isPresented: $showAnimation, onDismiss: clearCanvas) {
                     AnimatedView(epicycles: $epicycles, keyframes: $keyframes)
                 }
+                .sheet(isPresented: $showTips) {
+                    TipsView()
+                }
         }
         .navigationViewStyle(.stack)
     }
     
     @ViewBuilder
     private func toolbarItems() -> some View {
-        Button(action: showTips) {
+        Button(action: showTipsView) {
             Image(systemName: "questionmark.circle")
         }
         .accessibilityLabel("Show tips on how to achieve the best result.")
@@ -59,8 +63,8 @@ struct ContentView: View {
         }
     }
     
-    private func showTips() {
-        
+    private func showTipsView() {
+        showTips = true
     }
     
     private func finishAndGenerate() {
