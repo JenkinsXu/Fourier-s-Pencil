@@ -12,7 +12,7 @@ struct AnimatedView: View {
     @Binding var epicycles: [AnimationGenerator.Epicycle]
     @Binding var keyframes: [[CGPoint]]
     @State var currentFrame = 0
-    let animationTimer = Timer.publish(every: 0.02, on: .current, in: .default).autoconnect()
+    let animationTimer = Timer.publish(every: 0.05, on: .current, in: .default).autoconnect()
     
     var body: some View {
         Canvas { context, size in
@@ -31,13 +31,13 @@ struct AnimatedView: View {
                     let path = CGPath(ellipseIn: rectangle, transform: nil)
                     
                     cgContext.addPath(path)
-                    cgContext.setStrokeColor(UIColor.systemBlue.cgColor)
-                    cgContext.setLineWidth(1)
+                    cgContext.setStrokeColor(UIColor.systemGray4.cgColor)
+                    cgContext.setLineWidth(0.4)
                     cgContext.drawPath(using: .stroke)
                 }
                 
-                cgContext.setStrokeColor(UIColor.orange.cgColor)
-                cgContext.setLineWidth(2)
+                cgContext.setStrokeColor(UIColor.systemGray.cgColor)
+                cgContext.setLineWidth(1)
                 
                 for pointsPair in centerLocations.windows(ofCount: 2) {
                     cgContext.move(to: pointsPair.first!)
@@ -52,7 +52,7 @@ struct AnimatedView: View {
                         cgContext.move(to: pointsPair.first!)
                         cgContext.addLine(to: pointsPair.last!)
                     }
-                    cgContext.setStrokeColor(UIColor.purple.cgColor)
+                    cgContext.setStrokeColor(UIColor.systemYellow.cgColor)
                     cgContext.drawPath(using: .stroke)
                 }
             }
