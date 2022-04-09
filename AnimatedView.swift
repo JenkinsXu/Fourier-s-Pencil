@@ -14,7 +14,9 @@ struct AnimatedView: View {
     @Binding var keyframes: [[CGPoint]]
     @Environment(\.dismiss) var dismiss: DismissAction
     @State var currentFrame = 0
+    
     let animationTimer = Timer.publish(every: 0.05, on: .current, in: .default).autoconnect()
+    @State private var shouldListenToTimer = true
     
     var body: some View {
         NavigationView {
@@ -86,8 +88,17 @@ struct AnimatedView: View {
                 if currentFrame < AnimationGenerator.numberOfFrames - 1 {
                     currentFrame += 1
                 } else {
+                    guard shouldListenToTimer else { return }
                     withAnimation(.easeInOut(duration: 0.8)) {
-                        opacity = 0
+                        opacity = 0.0
+                    }
+                    shouldListenToTimer = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                        currentFrame = 0
+                        shouldListenToTimer = true
+                        withAnimation(.easeInOut(duration: 0.8)) {
+                            opacity = 1.0
+                        }
                     }
                 }
             }
