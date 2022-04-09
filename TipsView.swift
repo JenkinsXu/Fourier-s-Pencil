@@ -13,17 +13,17 @@ struct TipsView: View {
     var body: some View {
         TabView {
             Text("Welcome to Fourier's Pencil!").font(.title).bold()
-            TipsVStack(withVideoNamed: "draw-tips~dark@2x") {
+            TipsVStack(withVideoNamed: "tips-draw~dark@2x") {
                 Text("Draw").font(.title).bold()
                 Text("Express your creativity in one stroke.")
             }
-            TipsVStack(withVideoNamed: "draw-tips~dark@2x") {
+            TipsVStack(withVideoNamed: "tips-redraw~dark@2x") {
                 Text("Redraw").font(.title).bold()
                 Text("Tap and redraw if you want.")
             }
-            TipsVStack(withVideoNamed: "draw-tips~dark@2x", automaticallyAddSpacer: false) {
+            TipsVStack(withVideoNamed: "tips-magic~dark@2x", automaticallyAddSpacer: false) {
                 Text("Magic").font(.title).bold()
-                Text("Tap \"Finish\" and feel the beauty of math.")
+                Text("Tap \"Finish\" and see the beauty of math.")
                 Spacer()
                 Button("Start Drawing") { dismiss() }
                     .buttonStyle(.borderedProminent)
@@ -54,7 +54,7 @@ struct TipsVStack<Content: View>: View {
     var body: some View {
         VStack {
             VideoPlayer(player: player)
-                .aspectRatio(16 / 9, contentMode: .fit)
+                .aspectRatio(4 / 3, contentMode: .fit)
                 .onAppear(perform: player.play)
             content
             if automaticallyAddSpcaer {
