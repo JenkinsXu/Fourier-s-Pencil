@@ -16,9 +16,7 @@ struct ContentView: View {
                 .navigationTitle("Create Your One Stroke Painting")
                 .toolbar(content: toolbarItems)
                 .background(Color(uiColor: .tertiarySystemGroupedBackground))
-                .fullScreenCover(isPresented: $showAnimation) {
-                    canvasView.drawing = PKDrawing()
-                } content: {
+                .fullScreenCover(isPresented: $showAnimation, onDismiss: clearCanvas) {
                     AnimatedView(epicycles: $epicycles, keyframes: $keyframes)
                 }
         }
