@@ -15,7 +15,7 @@ struct AnimationGenerator {
     private let yCoordinates: [Float]
     
     struct NumericError: Error {}
-    struct KeyFrame {
+    struct Keyframe {
         let timedLocations: [CGPoint]
         func location(atTime time: Int) -> CGPoint {
             return timedLocations[time]
@@ -51,7 +51,7 @@ struct AnimationGenerator {
         return forwardDFT.transform(real: real, imaginary: imaginary)
     }
     
-    func epicycles() throws -> [KeyFrame] {
+    func keyframes() throws -> [Keyframe] {
         let (dftReal, dftImaginary) = try discreteFourierTransform(real: xCoordinates, imaginary: yCoordinates)
         let complexValuesCount = dftReal.count
         let indices = Array(0..<complexValuesCount).map { Float($0) }
@@ -97,14 +97,14 @@ struct AnimationGenerator {
             return factorInterleaved.map { CGPoint.inComplexPlane(at: $0) }
         }
         
-        var result = [KeyFrame]()
-        result.append(KeyFrame(timedLocations: [CGPoint](repeating: .zero, count: complexValuesCount)))
+        var result = [Keyframe]()
+        result.append(Keyframe(timedLocations: [CGPoint](repeating: .zero, count: complexValuesCount)))
         
         for factor in factors {
             guard let last = result.last else { continue }
             print(last)
             print("factor", factor)
-            result.append(KeyFrame(timedLocations: last.timedLocations + factor))
+            result.append(Keyframe(timedLocations: last.timedLocations + factor))
         }
         
         print(result.last)

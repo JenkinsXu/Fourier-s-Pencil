@@ -3,7 +3,7 @@ import PencilKit
 
 struct ContentView: View {
     @State private var canvasView = PKCanvasView()
-    @State private var epicycles = [AnimationGenerator.KeyFrame]()
+    @State private var epicycles = [AnimationGenerator.Keyframe]()
     @State private var showAnimation = false
     
     var body: some View {
@@ -57,7 +57,7 @@ struct ContentView: View {
         
         Task.detached(priority: .userInitiated) {
             do {
-                epicycles = try animationGenerator.epicycles()
+                epicycles = try animationGenerator.keyframes()
                 showAnimation = true
             } catch {
                 Swift.debugPrint(error.localizedDescription)

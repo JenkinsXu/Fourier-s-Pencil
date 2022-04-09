@@ -9,7 +9,7 @@ import SwiftUI
 import Algorithms
 
 struct AnimatedView: View {
-    @Binding var epicycles: [AnimationGenerator.KeyFrame]
+    @Binding var epicycles: [AnimationGenerator.Keyframe]
     
     var body: some View {
         Canvas { context, size in
