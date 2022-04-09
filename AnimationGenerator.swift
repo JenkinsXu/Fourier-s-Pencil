@@ -15,7 +15,7 @@ struct AnimationGenerator {
     private let yCoordinates: [Float]
     
     struct NumericError: Error {}
-    struct Keyframe {
+    struct Epicycle {
         let timedLocations: [CGPoint]
         func location(atTime time: Int) -> CGPoint {
             return timedLocations[time]
@@ -30,8 +30,6 @@ struct AnimationGenerator {
         }
         self.xCoordinates = locations.map { Float($0.x) }
         self.yCoordinates = locations.map { Float($0.y) }
-//        self.xCoordinates = [2, 3, 4, 5, 4, 3, 2, 1]
-//        self.yCoordinates = [4, 3, 4, 3, 2, 1, 2, 3]
     }
     
     private func discreteFourierTransform(real: [Float], imaginary: [Float]) throws -> (real: [Float], imaginary: [Float]) {
@@ -51,7 +49,7 @@ struct AnimationGenerator {
         return forwardDFT.transform(real: real, imaginary: imaginary)
     }
     
-    func keyframes() throws -> [Keyframe] {
+    func epicycles() throws -> [Epicycle] {
         let (dftReal, dftImaginary) = try discreteFourierTransform(real: xCoordinates, imaginary: yCoordinates)
         let complexValuesCount = dftReal.count
         let indices = Array(0..<complexValuesCount).map { Float($0) }
@@ -62,8 +60,6 @@ struct AnimationGenerator {
             let exponent = vDSP.divide(elementwiseProduct, Float(complexValuesCount))
             let exponentReal = vForce.cos(exponent)
             let exponentImaginary = vForce.sin(exponent)
-//            print("expo real:", exponentReal)
-//            print("expo imag:", exponentImaginary)
             
             var centerReal = vDSP.divide(
                 vDSP.subtract(
@@ -77,10 +73,6 @@ struct AnimationGenerator {
                     vDSP.multiply(dftImaginary[time], exponentReal)),
                 Float(complexValuesCount)
             )
-//            print("dft real:", dftReal)
-//            print("dft imag:", dftImaginary)
-//            print("cen real", centerReal)
-//            print("cen imag", centerImaginary)
             
             var factorInterleaved = [DSPComplex](repeating: DSPComplex(),
                                                  count: complexValuesCount)
@@ -97,19 +89,14 @@ struct AnimationGenerator {
             return factorInterleaved.map { CGPoint.inComplexPlane(at: $0) }
         }
         
-        var result = [Keyframe]()
-        result.append(Keyframe(timedLocations: [CGPoint](repeating: .zero, count: complexValuesCount)))
+        var result = [Epicycle]()
+        result.append(Epicycle(timedLocations: [CGPoint](repeating: .zero, count: complexValuesCount)))
         
         for factor in factors {
             guard let last = result.last else { continue }
-//            print(last)
-//            print("factor", factor)
-            result.append(Keyframe(timedLocations: last.timedLocations + factor))
+            result.append(Epicycle(timedLocations: last.timedLocations + factor))
         }
         
-//        print(result.map { $0.timedLocations.last! })
-        
-        print("Done")
         return result
     }
 }

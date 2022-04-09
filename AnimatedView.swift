@@ -9,12 +9,12 @@ import SwiftUI
 import Algorithms
 
 struct AnimatedView: View {
-    @Binding var keyframes: [AnimationGenerator.Keyframe]
+    @Binding var epicycles: [AnimationGenerator.Epicycle]
     
     var body: some View {
         Canvas { context, size in
             context.withCGContext { cgContext in
-                let locations = keyframes.last!.timedLocations
+                let locations = epicycles.last!.timedLocations
                 cgContext.setStrokeColor(UIColor.orange.cgColor)
                 cgContext.setLineWidth(2)
                 
