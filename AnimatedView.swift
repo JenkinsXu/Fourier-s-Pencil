@@ -9,23 +9,21 @@ import SwiftUI
 import Algorithms
 
 struct AnimatedView: View {
-    @Binding var epicycles: [AnimationGenerator.Keyframe]
+    @Binding var keyframes: [AnimationGenerator.Keyframe]
     
     var body: some View {
         Canvas { context, size in
             context.withCGContext { cgContext in
-                let locations = epicycles.last!.timedLocations
+                let locations = keyframes.last!.timedLocations
                 cgContext.setStrokeColor(UIColor.orange.cgColor)
                 cgContext.setLineWidth(2)
                 
                 for pointsPair in locations.windows(ofCount: 2) {
-//                    print(pointsPair)
                     cgContext.move(to: pointsPair.first!)
                     cgContext.addLine(to: pointsPair.last!)
-                    cgContext.drawPath(using: .stroke)
                 }
                 
-//                cgContext.drawPath(using: .stroke)
+                cgContext.drawPath(using: .stroke)
             }
         }
     }

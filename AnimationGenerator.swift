@@ -28,10 +28,10 @@ struct AnimationGenerator {
         let locations = stride(from: 0.0, to: Double(path.count), by: stepSize).map {
             path.interpolatedLocation(at: CGFloat($0))
         }
-//        self.xCoordinates = locations.map { Float($0.x) }
-//        self.yCoordinates = locations.map { Float($0.y) }
-        self.xCoordinates = [2, 3, 4, 5, 4, 3, 2, 1]
-        self.yCoordinates = [4, 3, 4, 3, 2, 1, 2, 3]
+        self.xCoordinates = locations.map { Float($0.x) }
+        self.yCoordinates = locations.map { Float($0.y) }
+//        self.xCoordinates = [2, 3, 4, 5, 4, 3, 2, 1]
+//        self.yCoordinates = [4, 3, 4, 3, 2, 1, 2, 3]
     }
     
     private func discreteFourierTransform(real: [Float], imaginary: [Float]) throws -> (real: [Float], imaginary: [Float]) {
@@ -62,25 +62,25 @@ struct AnimationGenerator {
             let exponent = vDSP.divide(elementwiseProduct, Float(complexValuesCount))
             let exponentReal = vForce.cos(exponent)
             let exponentImaginary = vForce.sin(exponent)
-            print("expo real:", exponentReal)
-            print("expo imag:", exponentImaginary)
+//            print("expo real:", exponentReal)
+//            print("expo imag:", exponentImaginary)
             
             var centerReal = vDSP.divide(
                 vDSP.subtract(
-                    vDSP.multiply(dftReal, exponentReal),
-                    vDSP.multiply(dftImaginary, exponentImaginary)),
+                    vDSP.multiply(dftReal[time], exponentReal),
+                    vDSP.multiply(dftImaginary[time], exponentImaginary)),
                 Float(complexValuesCount)
             )
             var centerImaginary = vDSP.divide(
                 vDSP.add(
-                    vDSP.multiply(dftReal, exponentImaginary),
-                    vDSP.multiply(dftImaginary, exponentReal)),
+                    vDSP.multiply(dftReal[time], exponentImaginary),
+                    vDSP.multiply(dftImaginary[time], exponentReal)),
                 Float(complexValuesCount)
             )
-            print("dft real:", dftReal)
-            print("dft imag:", dftImaginary)
-            print("cen real", centerReal)
-            print("cen imag", centerImaginary)
+//            print("dft real:", dftReal)
+//            print("dft imag:", dftImaginary)
+//            print("cen real", centerReal)
+//            print("cen imag", centerImaginary)
             
             var factorInterleaved = [DSPComplex](repeating: DSPComplex(),
                                                  count: complexValuesCount)
@@ -102,12 +102,12 @@ struct AnimationGenerator {
         
         for factor in factors {
             guard let last = result.last else { continue }
-            print(last)
-            print("factor", factor)
+//            print(last)
+//            print("factor", factor)
             result.append(Keyframe(timedLocations: last.timedLocations + factor))
         }
         
-        print(result.last)
+//        print(result.map { $0.timedLocations.last! })
         
         print("Done")
         return result

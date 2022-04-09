@@ -15,7 +15,7 @@ struct ContentView: View {
                 .background(Color(uiColor: .tertiarySystemGroupedBackground))
                 .toolbar(content: toolbarItems)
                 .sheet(isPresented: $showAnimation) {
-                    AnimatedView(epicycles: $epicycles)
+                    AnimatedView(keyframes: $epicycles)
                 }
         }
         .navigationViewStyle(.stack)
