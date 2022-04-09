@@ -17,7 +17,11 @@ struct AnimatedView: View {
     var body: some View {
         Canvas { context, size in
             context.withCGContext { cgContext in
-                let centerLocations = keyframes[currentFrame]
+                let centerLocations = keyframes[currentFrame][1...]
+                
+                // Circles
+                cgContext.setStrokeColor(UIColor.systemGray4.cgColor)
+                cgContext.setLineWidth(0.4)
                 
                 for pointsPair in centerLocations.windows(ofCount: 2) {
                     let centerPoint = pointsPair.first!
@@ -31,11 +35,10 @@ struct AnimatedView: View {
                     let path = CGPath(ellipseIn: rectangle, transform: nil)
                     
                     cgContext.addPath(path)
-                    cgContext.setStrokeColor(UIColor.systemGray4.cgColor)
-                    cgContext.setLineWidth(0.4)
                     cgContext.drawPath(using: .stroke)
                 }
                 
+                // Lines
                 cgContext.setStrokeColor(UIColor.systemGray.cgColor)
                 cgContext.setLineWidth(1)
                 
@@ -46,6 +49,7 @@ struct AnimatedView: View {
                 
                 cgContext.drawPath(using: .stroke)
                 
+                // Path
                 if let resultLocations = epicycles.last?.timedLocations {
                     cgContext.move(to: resultLocations.first!)
                     for pointsPair in resultLocations[0...currentFrame].windows(ofCount: 2) {
