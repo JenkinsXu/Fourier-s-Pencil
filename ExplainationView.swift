@@ -17,7 +17,7 @@ struct ExplainationView: View {
         NavigationView {
             ScrollView {
                 Text(explainationText)
-                    .padding()
+                    .padding(18)
             }
             .navigationTitle("What is this?")
         }
