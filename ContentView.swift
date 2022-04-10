@@ -40,6 +40,10 @@ struct ContentView: View {
                 }
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+            // NOTE: This is for demo only. In reality, it should only show itself during the first launch
+            showTips = true
+        }
     }
     
     @ViewBuilder
@@ -55,7 +59,7 @@ struct ContentView: View {
     }
     
     private func clearCanvas() {
-        canvasView.undoManager?.undo()
+        canvasView.drawing = PKDrawing()
         canvasView.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.4, delay: .zero,
                        options: [.curveEaseIn, .allowUserInteraction]) {
