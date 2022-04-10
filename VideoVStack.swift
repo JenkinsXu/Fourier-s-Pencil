@@ -47,9 +47,8 @@ struct VideoVStack<Content: View>: View {
                 .aspectRatio(4 / 3, contentMode: .fit)
                 .onAppear(perform: player.play)
                 .accessibilityHidden(true)
-            VStack {
-                content
-            }.padding()
+            content
+                .padding(.horizontal)
             if automaticallyAddSpcaer {
                 Spacer()
             }

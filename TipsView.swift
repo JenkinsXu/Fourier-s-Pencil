@@ -25,13 +25,12 @@ struct TipsView: View {
             }
             
             // NOTE: The following's onAppear will be called before appearing. It might be a bug from TabView.
-            VideoVStack(withVideoNamed: "tips-magic~dark@2x", automaticallyAddSpacer: false) {
+            VideoVStack(withVideoNamed: "tips-magic~dark@2x") {
                 Text("Magic").font(.title).bold()
-                Text("Tap \"Finish\" and see the beauty of math.")
-                Spacer()
+                Text("Tap \"Finish\" when you are done, and see the beauty of math.")
                 Button("Start Drawing") { dismiss() }
                     .buttonStyle(.borderedProminent)
-                    .padding(.bottom, 48)
+                    .padding(.bottom, 40)
             }
         }
         .tabViewStyle(.page)
