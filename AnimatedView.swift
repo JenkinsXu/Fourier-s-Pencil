@@ -9,11 +9,12 @@ import SwiftUI
 import Algorithms
 
 struct AnimatedView: View {
-    @State var opacity = 1.0
+    @State private var opacity = 1.0
     @Binding var epicycles: [AnimationGenerator.Epicycle]
     @Binding var keyframes: [[CGPoint]]
     @Environment(\.dismiss) var dismiss: DismissAction
-    @State var currentFrame = 0
+    @State private var currentFrame = 0
+    @State private var showExplaination = false
     
     let animationTimer = Timer.publish(every: 0.027, on: .current, in: .default).autoconnect()
     @State private var shouldListenToTimer = true
@@ -56,7 +57,8 @@ struct AnimatedView: View {
                         let currentPoint = pointsPair.first!
                         let nextPoint = pointsPair.last!
                         
-                        let lineWidth = currentPoint.distanceFrom(nextPoint) / 40
+                        let distance = currentPoint.distanceFrom(nextPoint)
+                        let lineWidth = (distance / 40) > 1 ? 1 : (distance / 40)
                         cgContext.setLineWidth(lineWidth)
                         
                         cgContext.move(to: currentPoint)
@@ -103,9 +105,15 @@ struct AnimatedView: View {
                 }
             }
             .toolbar {
+                Button("What is this?") {
+                    showExplaination = true
+                }
                 Button("Done") {
                     dismiss()
                 }
+            }
+            .sheet(isPresented: $showExplaination) {
+                ExplainationView()
             }
         }
     }
