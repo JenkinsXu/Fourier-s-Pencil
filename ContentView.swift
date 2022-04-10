@@ -68,7 +68,7 @@ struct ContentView: View {
         canvasView.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.4, delay: .zero,
                        options: [.curveEaseIn, .allowUserInteraction]) {
-            canvasView.backgroundColor = .systemBackground
+            canvasView.backgroundColor = .black // would be .systemBackground if supports light mode in the future
         }
     }
     
