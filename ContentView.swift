@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var keyframes = [[CGPoint]]()
     @State private var showAnimation = false
     @State private var showTips = false
+    @State private var showAlert = false
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     var navigationTitleText: String {
@@ -39,6 +40,11 @@ struct ContentView: View {
                 }
         }
         .navigationViewStyle(.stack)
+        .alert("Unexpected stroke count", isPresented: $showAlert, actions: {
+            Button("OK", role: .cancel) {}
+        }, message: {
+            Text("Currently, only one stroke paintings are supported.")
+        })
         .onAppear {
             // NOTE: This is for demo only. In reality, it should only show itself during the first launch
             showTips = true
@@ -73,7 +79,7 @@ struct ContentView: View {
     private func finishAndGenerate() {
         let strokes = canvasView.drawing.strokes
         guard strokes.count == 1 else {
-            // TODO: Show dialog
+            showAlert = true
             return
         }
         let path = strokes[0].path
