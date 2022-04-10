@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ExplainationView: View {
     
+    @Environment(\.dismiss) var dismiss: DismissAction
+    
     let explainationText = """
-    Each line you see in this animation is a vector, spinning at a constant rate. But when you connect them tip to tail, incredible things happen: by tuning their rotating frequency and making the last vector's tail draw, you can approximate pretty much any curve you want (like the one you just drew)! The entire animation is driven by something called the Fourier series, which is a beautiful piece of math invented to solve heat equations that drive many of the technologies today.
+    Each line you see in this animation is a vector, spinning at a constant rate. But when you connect them tip to tail, incredible things happen: by tuning their rotating frequency and making the last vector draw, you can approximate pretty much any curve you want (like the one you just drew)! The entire animation is driven by something called the Fourier series, which is a beautiful piece of math invented to solve heat equations that drive many of the technologies today.
     """
     
     var body: some View {
@@ -20,6 +22,11 @@ struct ExplainationView: View {
                     .padding(18)
             }
             .navigationTitle("What is this?")
+            .toolbar {
+                Button("Done") {
+                    dismiss()
+                }
+            }
         }
     }
 }

@@ -19,6 +19,18 @@ struct AnimatedView: View {
     let animationTimer = Timer.publish(every: 0.027, on: .current, in: .default).autoconnect()
     @State private var shouldListenToTimer = true
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    private var navigationTitleText: String {
+        switch horizontalSizeClass {
+        case .regular:
+            return "Complex Fourier Series"
+        case .compact:
+            return "Fourier Series"
+        default:
+            return "Loading"
+        }
+    }
+    
     var body: some View {
         NavigationView {
             Canvas { context, size in
@@ -83,8 +95,9 @@ struct AnimatedView: View {
                     }
                 }
             }
+            .accessibilityLabel("Spinning vectors connected together, with the last vector drawing the curve you just drew.")
             .opacity(opacity)
-            .navigationTitle("Complex Fourier Series")
+            .navigationTitle(navigationTitleText)
             .navigationBarTitleDisplayMode(.inline)
             .onReceive(animationTimer) { _ in
                 if currentFrame < AnimationGenerator.numberOfFrames - 1 {
@@ -105,11 +118,9 @@ struct AnimatedView: View {
                 }
             }
             .toolbar {
-                Button("What is this?") {
-                    showExplaination = true
-                }
-                Button("Done") {
-                    dismiss()
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button("What is this?") { showExplaination = true }
+                    Button("Done") { dismiss() }
                 }
             }
             .sheet(isPresented: $showExplaination) {

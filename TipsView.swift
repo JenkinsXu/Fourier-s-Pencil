@@ -11,7 +11,9 @@ struct TipsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
     var body: some View {
         TabView {
-            Text("Welcome to Fourier's Pencil!").font(.title).bold()
+            Text("Welcome to Fourier's Pencil!")
+                .font(.title).bold()
+                .padding().multilineTextAlignment(.center)
             VideoVStack(withVideoNamed: "tips-draw~dark@2x") {
                 Text("Draw").font(.title).bold()
                 Text("Express your creativity in one stroke.")

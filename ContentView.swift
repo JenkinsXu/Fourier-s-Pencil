@@ -10,7 +10,7 @@ struct ContentView: View {
     @State private var showAlert = false
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    var navigationTitleText: String {
+    private var navigationTitleText: String {
         switch horizontalSizeClass {
         case .regular:
             return "Create Your One Stroke Painting"
