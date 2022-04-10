@@ -16,6 +16,7 @@ struct TipsView: View {
                 Text("Draw").font(.title).bold()
                 Text("Express your creativity in one stroke.")
             }
+            
             VideoVStack(withVideoNamed: "tips-redraw~dark@2x") {
                 Text("Redraw").font(.title).bold()
                 Text("Tap and redraw if you want.")
@@ -32,5 +33,6 @@ struct TipsView: View {
             }
         }
         .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }

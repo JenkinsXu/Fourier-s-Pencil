@@ -3,7 +3,6 @@ import PencilKit
 
 struct ContentView: View {
     @State private var canvasView = PKCanvasView()
-    // TODO: maybe not a state?
     @State private var epicycles = [AnimationGenerator.Epicycle]()
     @State private var keyframes = [[CGPoint]]()
     @State private var showAnimation = false
