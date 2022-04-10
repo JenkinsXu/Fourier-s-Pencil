@@ -28,5 +28,6 @@ struct ExplainationView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
