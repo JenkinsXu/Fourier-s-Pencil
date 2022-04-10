@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct TipsView: View {
     @Environment(\.dismiss) var dismiss: DismissAction
@@ -21,6 +20,8 @@ struct TipsView: View {
                 Text("Redraw").font(.title).bold()
                 Text("Tap and redraw if you want.")
             }
+            
+            // NOTE: The following's onAppear will be called before appearing. It might be a bug from TabView.
             VideoVStack(withVideoNamed: "tips-magic~dark@2x", automaticallyAddSpacer: false) {
                 Text("Magic").font(.title).bold()
                 Text("Tap \"Finish\" and see the beauty of math.")

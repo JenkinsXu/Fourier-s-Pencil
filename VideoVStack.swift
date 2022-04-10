@@ -6,6 +6,23 @@
 //
 
 import SwiftUI
+import AVKit
+
+/// This View is created so that we can hide the play control in Tips screens. Replace it with `VideoPlayer` when hidding is supported.
+struct PlayerView: UIViewControllerRepresentable {
+    
+    let player: AVPlayer
+    
+    func makeUIViewController(context: Context) -> some UIViewController {
+        let viewController = AVPlayerViewController()
+        viewController.player = player
+        viewController.showsPlaybackControls = false
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+
+}
 
 struct VideoVStack<Content: View>: View {
     private var playerLooper: AVPlayerLooper
@@ -26,7 +43,7 @@ struct VideoVStack<Content: View>: View {
     
     var body: some View {
         VStack {
-            VideoPlayer(player: player)
+            PlayerView(player: player)
                 .aspectRatio(4 / 3, contentMode: .fit)
                 .onAppear(perform: player.play)
             content
